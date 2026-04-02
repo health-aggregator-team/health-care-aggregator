@@ -65,4 +65,12 @@ async function loadLogs() {
     }
 
 }
+checkHealth()
 loadLogs()
+
+setInterval(() => {
+
+    checkHealth()
+    loadLogs()
+
+}, 5000)
