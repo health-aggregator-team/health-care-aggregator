@@ -1,13 +1,25 @@
 const mongoose = require("mongoose")
 
 const healthSchema = new mongoose.Schema({
-    status: String,
+
+    overallStatus: String,
+
+    memoryStatus: String,
+
+    diskStatus: String,
+
     uptime: Number,
+
     memoryUsage: String,
+
+    diskUsage: String,
+
     timestamp: {
         type: Date,
         default: Date.now
     }
+
 })
 
-module.exports = mongoose.model("HealthLog", healthSchema)
+module.exports =
+    mongoose.model("HealthLog", healthSchema)

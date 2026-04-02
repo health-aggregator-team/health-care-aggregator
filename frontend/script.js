@@ -6,8 +6,7 @@ async function checkHealth() {
 
         const data = await response.json()
 
-        document.getElementById("status").innerText =
-    data.overallStatus
+        document.getElementById("status").innerText = data.overallStatus
 
         document.getElementById("uptime").innerText =
             data.uptime.toFixed(2) + " seconds"
@@ -51,7 +50,7 @@ async function loadLogs() {
             const row = table.insertRow()
 
             row.insertCell(0).innerText =
-                log.overallStatus
+                log.overallStatus || log.status
 
             row.insertCell(1).innerText =
                 log.memoryUsage
