@@ -28,16 +28,16 @@ This project simulates real-world health monitoring systems similar to **Kuberne
 
 # 🚀 Features
 
-✅ Express `/health` endpoint
-✅ Real-time health monitoring
-✅ Memory usage tracking
-✅ Disk usage monitoring
-✅ MongoDB health log storage
-✅ Health history dashboard
-✅ Auto-refresh health checks
-✅ Unix shell script integration
-✅ Hierarchical health evaluation
-✅ Professional frontend dashboard
+ Express `/health` endpoint
+ Real-time health monitoring
+ Memory usage tracking
+ Disk usage monitoring
+ MongoDB health log storage
+ Health history dashboard
+ Auto-refresh health checks
+ Unix shell script integration
+ Hierarchical health evaluation
+ Professional frontend dashboard
 
 ---
 
