@@ -9,6 +9,7 @@ A Distributed Health Check Aggregator System built to monitor and report the per
 - **Genuine Hardware Probing**: Tracks machine telemetry—including true physical disk capacity mapping (via `node-disk-info`) and multi-level RAM allocation checks (Node.js Heap vs global OS capacity).
 - **Graceful Error Handling**: Features a global middleware safety net that shields the Express loop from abrupt crashes during failing database pipelines.
 - **Automated Logging**: Pings the system natively and saves comprehensive status logs directly to MongoDB, readable via REST endpoints with support for pagination.
+- **Localhost Optimized**: Designed to be cleanly run and evaluated on local hardware environments without cloud dependencies.
 
 ## 🚀 Technologies
 

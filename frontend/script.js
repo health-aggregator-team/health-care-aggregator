@@ -1,13 +1,10 @@
 async function checkHealth() {
-    const isLocal = window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const API_BASE_URL = isLocal ? 'http://localhost:5000' : '';
-
     const statusEl = document.getElementById("status");
     const cardStatus = document.getElementById("card-status");
     const pulseDot = document.getElementById("system-pulse");
 
     try {
-        const response = await fetch(`${API_BASE_URL}/api/v1/health`);
+        const response = await fetch("http://localhost:5000/api/v1/health");
         const data = await response.json();
 
         // Update overall status
@@ -40,11 +37,8 @@ async function checkHealth() {
 }
 
 async function loadLogs() {
-    const isLocal = window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const API_BASE_URL = isLocal ? 'http://localhost:5000' : '';
-
     try {
-        const response = await fetch(`${API_BASE_URL}/api/v1/logs?limit=10`);
+        const response = await fetch("http://localhost:5000/api/v1/logs?limit=10");
         const logs = await response.json();
 
         const tbody = document.querySelector("#logTable tbody");
