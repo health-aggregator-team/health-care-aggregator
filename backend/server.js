@@ -1,94 +1,45 @@
 const express = require("express")
 const cors = require("cors")
+const dotenv = require("dotenv")
 const connectDB = require("./db")
-const HealthLog = require("./models/HealthLog")
+const healthRoutes = require("./healthRoutes")
+const errorHandler = require("./errorHandler")
+
+// Load environment configurations from root .env file
+// Using path since we are running from root generally, or inside backend
+dotenv.config({ path: '../.env' })
+// Also try local directory fallback just in case
+dotenv.config()
 
 const app = express()
 
+// Global Middleware
 app.use(cors())
 app.use(express.json())
 
+// Connect to MongoDB
 connectDB()
 
+// MVC Application Routes API Versioning
+app.use("/api/v1", healthRoutes)
+
+// Diagnostic Check Base
 app.get("/", (req, res) => {
-    res.send("Health Aggregator Server Running")
+    res.send("Health Aggregator Server Running (API is fully available at /api/v1/health)")
 })
 
-app.get("/health", async (req, res) => {
-
-    const memory = process.memoryUsage().rss / 1024 / 1024
-
-    let memoryStatus = "Healthy"
-
-    let diskStatus = "Healthy"
-
-const diskUsage = Math.random() * 100
-
-if (diskUsage > 80) {
-    diskStatus = "Warning"
-}
-
-    if (memory > 500) {
-        memoryStatus = "Warning"
-    }
-
-    const overallStatus =
-    memoryStatus === "Healthy" &&
-    diskStatus === "Healthy"
-        ? "OK"
-        : "DEGRADED"
-
-    const healthData = {
-        overallStatus: overallStatus,
-        memoryStatus: memoryStatus,
-        uptime: process.uptime(),
-        memoryUsage: memory.toFixed(2) + " MB",
-        timestamp: new Date(),
-        diskStatus: diskStatus,
-        diskUsage: diskUsage.toFixed(2) + "%"
-    }
-
-    try {
-
-        const log = new HealthLog(healthData)
-
-        await log.save()
-
-        res.json(healthData)
-
-    } catch (error) {
-
-        res.json({
-            status: "ERROR"
-        })
-
-    }
-
+// Unhandled Endpoint Interceptor
+app.use((req, res, next) => {
+    const error = new Error(`API Endpoint Route Not Found - ${req.originalUrl}`)
+    res.status(404)
+    next(error)
 })
 
-app.get("/logs", async (req, res) => {
+// System-wide Global Error Handling
+app.use(errorHandler)
 
-    try {
-
-        const logs = await HealthLog
-            .find()
-            .sort({ timestamp: -1 })
-            .limit(10)
-
-        res.json(logs)
-
-    } catch (error) {
-
-        res.json({
-            status: "ERROR"
-        })
-
-    }
-
-})
-
-const PORT = 5000
+const PORT = process.env.PORT || 5000
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
+    console.log(`Server running in ${process.env.NODE_ENV || 'development'} stage on port ${PORT}`)
 })
