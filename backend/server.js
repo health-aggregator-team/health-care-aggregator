@@ -40,6 +40,12 @@ app.use(errorHandler)
 
 const PORT = process.env.PORT || 5000
 
-app.listen(PORT, () => {
-    console.log(`Server running in ${process.env.NODE_ENV || 'development'} stage on port ${PORT}`)
-})
+// Only aggressively bind the port if we are NOT running in a Serverless environment like Vercel
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Server running in ${process.env.NODE_ENV || 'development'} stage on port ${PORT}`)
+    })
+}
+
+// Export the Express API for Vercel Serverless parsing
+module.exports = app
